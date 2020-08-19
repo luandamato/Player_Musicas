@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.myapplication.MusicaActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/img_fundo"/>
+
+    <LinearLayout
+        android:id="@+id/botoes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:padding="15dp"
+        android:weightSum="3">
+
+        <Switch
+            android:id="@+id/swtLoop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_weight="1"/>
+
+        <Button android:id="@+id/btnDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_margin="15dp"
+            android:text="download"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:id="@+id/btnFechar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:src="@drawable/ic_close"
+            android:layout_weight="1"/>
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:padding="15dp"
+        android:weightSum="3">
+
+        <ImageButton android:id="@+id/btnVoltar"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/img_anterior"
+            android:background="@null"/>
+        <ImageButton android:id="@+id/btnPlay"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/img_pause"
+            android:background="@null"/>
+
+        <ImageButton android:id="@+id/btnAvancar"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/img_proximo"
+            android:background="@null"/>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/rl_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ll_bottom"
+        android:layout_margin="15dp">
+        <TextView
+            android:id="@+id/TxtTempoAtual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="2:01"
+            android:textSize="14sp"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/txtTempoTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="3:47"
+            android:textSize="14sp"
+            android:textColor="@color/black" />
+
+        <SeekBar android:id="@+id/seekTempo"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_toLeftOf="@id/txtTempoTotal"
+            android:layout_toRightOf="@id/TxtTempoAtual"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_centerVertical="true"
+            android:progressBackgroundTint="#E9E9E9"
+            android:progress="10"/>
+
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/txtArtista"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/rl_progress"
+        android:layout_centerHorizontal="true"
+        android:text="@string/nomeArtista"
+        android:textSize="14sp"
+        android:textColor="@color/black" />
+    <TextView
+        android:id="@+id/txtMusica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/txtArtista"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/nomeMusica"
+        android:textSize="18sp"
+        android:textColor="@color/black" />
+
+
+
+
+</RelativeLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InicialActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button android:id="@+id/musica1"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/musica1"
+            android:layout_margin="10dp"/>
+
+        <Button android:id="@+id/musica2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/musica2"
+            android:layout_margin="10dp"/>
+
+        <Button android:id="@+id/musica3"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/musica3"
+            android:layout_margin="10dp"/>
+
+        <Button android:id="@+id/musica4"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/musica4"
+            android:layout_margin="10dp"/>
+
+        <Button android:id="@+id/carrossel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/verCarrossel"
+            android:layout_margin="10dp"/>
+
+        <Button android:id="@+id/lingua"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/mudarLingua"
+            android:layout_margin="10dp"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

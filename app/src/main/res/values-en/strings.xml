@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Music Notification</string>
+
+    <string name="mudarLingua">Change the default language of the app</string>
+    <string name="escolhaLingua">choose your language</string>
+    <string name="verCarrossel">See Carousel</string>
+    <string name="musica1">Music 1</string>
+    <string name="musica2">Music 2</string>
+    <string name="musica3">Music 3</string>
+    <string name="musica4">Music 4</string>
+    <string name="nomeArtista">Artist Name</string>
+    <string name="nomeMusica">Music Name</string>
+</resources>
