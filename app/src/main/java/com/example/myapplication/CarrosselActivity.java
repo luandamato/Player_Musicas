@@ -21,7 +21,7 @@ import java.util.List;
 public class CarrosselActivity extends AppCompatActivity {
 
     private ViewPager2 viewpager2;
-    private List<SlideItem> slideItems;
+    private List<ControleValores> objetosItem;
     private Activity oActivity;
 
     @Override
@@ -37,13 +37,45 @@ public class CarrosselActivity extends AppCompatActivity {
     }
 
     private void preencherItens(){
-        slideItems = new ArrayList<SlideItem>();
-        slideItems.add(new SlideItem(R.drawable.mantra_ganesha));
-        slideItems.add(new SlideItem(R.drawable.mantra_ganesha));
-        slideItems.add(new SlideItem(R.drawable.mantra_ganesha));
-        slideItems.add(new SlideItem(R.drawable.mantra_ganesha));
 
-        viewpager2.setAdapter(new SliderAdapter(slideItems, viewpager2));
+        ControleValores objeto1 = new ControleValores("carrossel");
+        objeto1.adicionarValor("img", "mantra_esferas");
+        objeto1.adicionarValor("titulo", "Celula 1");
+        objeto1.adicionarValor("descricao", "Descricao da Celula 1");
+
+        ControleValores objeto2 = new ControleValores("carrossel");
+        objeto2.adicionarValor("img", "mantra_ganesha");
+        objeto2.adicionarValor("titulo", "Celula 2");
+        objeto2.adicionarValor("descricao", "Descricao da Celula 2");
+
+        ControleValores objeto3 = new ControleValores("carrossel");
+        objeto3.adicionarValor("img", "mantra_olho");
+        objeto3.adicionarValor("titulo", "Celula 3");
+        objeto3.adicionarValor("descricao", "Descricao da Celula 3");
+
+        ControleValores objeto4 = new ControleValores("carrossel");
+        objeto4.adicionarValor("img", "mantra_esferas");
+        objeto4.adicionarValor("titulo", "Celula 4");
+        objeto4.adicionarValor("descricao", "Descricao da Celula 4");
+
+        ControleValores objeto5 = new ControleValores("carrossel");
+        objeto5.adicionarValor("img", "mantra_om");
+        objeto5.adicionarValor("titulo", "Celula 5");
+        objeto5.adicionarValor("descricao", "Descricao da Celula 5");
+
+        ControleValores objeto6 = new ControleValores("carrossel");
+        objeto6.adicionarValor("img", "mantra_om");
+        objeto6.adicionarValor("titulo", "Celula 6");
+        objeto6.adicionarValor("descricao", "Descricao da Celula 6");
+        objetosItem = new ArrayList<ControleValores>();
+        objetosItem.add(objeto1);
+        objetosItem.add(objeto2);
+        objetosItem.add(objeto3);
+        objetosItem.add(objeto4);
+        objetosItem.add(objeto5);
+        objetosItem.add(objeto6);
+
+        viewpager2.setAdapter(new SliderAdapter(objetosItem, viewpager2, oActivity));
         viewpager2.setClipToPadding(false);
         viewpager2.setClipChildren(false);
         viewpager2.setOffscreenPageLimit(3);
