@@ -1,7 +1,9 @@
 package com.example.myapplication;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +25,10 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
 
     private List<ControleValores> slideItens;
     private ViewPager2 viewPager2;
-    private Context oContexto;
+    private Activity oContexto;
     private View view;
 
-    public SliderAdapter(List<ControleValores> slideItens, ViewPager2 viewPager2, Context context) {
+    public SliderAdapter(List<ControleValores> slideItens, ViewPager2 viewPager2, Activity context) {
         this.slideItens = slideItens;
         this.viewPager2 = viewPager2;
         this.oContexto = context;
@@ -63,6 +65,9 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
         private TextView Descricao;
         private ImageView imgFoto;
         private Button btnCell;
+        private ControleValores objetoItem;
+
+        private Resources res = null;
 
         public SliderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,12 +76,15 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
             Descricao = itemView.findViewById(R.id.Descricao);
             imgFoto = itemView.findViewById(R.id.imgFoto);
             btnCell = itemView.findViewById(R.id.btnCell);
+            res = oContexto.getResources();
         }
 
-        public void setImage(ControleValores objetoItem){
+        public void setImage(ControleValores pObjetoItem){
+            this.objetoItem = pObjetoItem;
 //            int resourceId = res.getIdentifier(objetoItem.obterValor("img"), "drawable",
-//                    context.getPackageName());//initialize res and context in adapter's contructor
+//                    oContexto.getPackageName());//initialize res and context in adapter's contructor
 //            imgFoto.setImageResource(resourceId);
+
             imgFoto.setImageResource(R.drawable.mantra_ganesha);
             Titulo.setText(objetoItem.obterValor("titulo"));
             Descricao.setText(objetoItem.obterValor("descricao"));
@@ -84,7 +92,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
                 @Override
                 public void onClick(View v) {
                     Intent oIntent = new Intent(oContexto, MusicaActivity.class);
-                    oIntent.putExtra("nomeAudio", "https://ccrma.stanford.edu/~jos/mp3/marimba.mp3");
+                    oIntent.putExtra("nomeAudio", objetoItem.obterItemValor("nomeAudio"));
                     oContexto.startActivity(oIntent);
                 }
             });

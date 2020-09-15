@@ -3,6 +3,8 @@ package com.example.myapplication;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.os.Binder;
 import android.os.IBinder;
 import android.app.Service;
 import android.content.Intent;
@@ -21,15 +23,33 @@ public class NotificationService extends Service {
     private RemoteViews bigViews;
     private final String LOG_TAG = "NotificationService";
     MusicaActivity main;
+    // Binder given to clients
+    private final IBinder binder = new LocalBinder();
+    // Registered callbacks
+    private ServiceCallbacks serviceCallbacks;
+
+
+    // Class used for the client Binder.
+    public class LocalBinder extends Binder {
+        NotificationService getService() {
+            // Return this instance of MyService so clients can call public methods
+            return NotificationService.this;
+        }
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return binder;
+    }
+
+    public void setCallbacks(ServiceCallbacks callbacks) {
+        serviceCallbacks = callbacks;
+    }
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-    }
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     public void onStartCommand(Intent intent, int flags, int startId, MusicaActivity activity) {
@@ -45,21 +65,28 @@ public class NotificationService extends Service {
         }
         else if (intent.getAction().equals(Constants.ACTION.PREV_ACTION)) {
             Toast.makeText(this, "Clicked Previous", Toast.LENGTH_SHORT).show();
+            serviceCallbacks.voltarN();
         }
         else if (intent.getAction().equals(Constants.ACTION.PLAY_ACTION)) {
             if (tocando){
                 Toast.makeText(this, "PAUSE", Toast.LENGTH_SHORT).show();
                 views.setImageViewResource(R.id.status_bar_play, R.drawable.img_play);
                 bigViews.setImageViewResource(R.id.status_bar_play, R.drawable.img_play);
+//                Intent oIntent = new Intent(NotificationService.this, MusicaActivity.class);
+//                oIntent.putExtra("play", "play");
+//                startActivity(oIntent);
+                serviceCallbacks.pause();
             }else{
                 Toast.makeText(this, "PLAY", Toast.LENGTH_SHORT).show();
                 views.setImageViewResource(R.id.status_bar_play, R.drawable.img_pause);
                 bigViews.setImageViewResource(R.id.status_bar_play, R.drawable.img_pause);
+                serviceCallbacks.play();
             }
             tocando = !tocando;
         }
         else if (intent.getAction().equals(Constants.ACTION.NEXT_ACTION)) {
             Log.i(LOG_TAG, "Clicked Next");
+            serviceCallbacks.avancarN();
         }
         else if (intent.getAction().equals(
                 Constants.ACTION.STOPFOREGROUND_ACTION)) {
@@ -68,8 +95,18 @@ public class NotificationService extends Service {
             stopForeground(true);
             stopSelf();
         }
+        else{
+            Intent resultIntent = new Intent(this, MusicaActivity.class);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+            stackBuilder.addNextIntentWithParentStack(resultIntent);
+        }
         atualizarNotificacao();
         return START_STICKY;
+    }
+
+    public void stop(){
+        stopForeground(true);
+        stopSelf();
     }
 
     private void preencherViews(){
@@ -142,5 +179,12 @@ public class NotificationService extends Service {
         status.icon = R.drawable.mantra_esferas;
         status.contentIntent = pendingIntent;
         startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
+    }
+
+    public interface ServiceCallbacks {
+        void pause();
+        void play();
+        void avancarN();
+        void voltarN();
     }
 }

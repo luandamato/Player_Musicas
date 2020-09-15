@@ -6,8 +6,10 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -16,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +40,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class MusicaActivity extends AppCompatActivity {
+public class MusicaActivity extends AppCompatActivity implements NotificationService.ServiceCallbacks {
 
     private Activity oActivity;
 
@@ -71,6 +74,17 @@ public class MusicaActivity extends AppCompatActivity {
 
     private String downloadAudioPath;
     private String urlDownloadLink = "";
+
+    private NotificationService myService;
+    private boolean bound = false;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // bind to Service
+        Intent intent = new Intent(this, NotificationService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
 
 
     @Override
@@ -152,13 +166,10 @@ public class MusicaActivity extends AppCompatActivity {
                 if(statusAudio.isEmpty())
                 {
                     audioStart();
-                    btnPlay.setImageResource(R.drawable.img_pause);
 
                 }
                 else if(statusAudio.toLowerCase().equals("ouvindo")) {
                     audioPause();
-                    timerHandler.removeCallbacks(timerRunnable);
-                    btnPlay.setImageResource(R.drawable.img_play);
                 }
             }
         });
@@ -174,26 +185,14 @@ public class MusicaActivity extends AppCompatActivity {
         btnAvancar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (tempoCorrido - 15 >= tempoTotal){
-                    tempoCorrido = tempoTotal - 1;
-                }else{
-                    tempoCorrido += 15;
-                }
-                player.seekTo(tempoCorrido*1000);
-                seekTempo.setProgress(tempoCorrido);
+                avancar();
             }
         });
 
         btnVoltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (tempoCorrido - 15 <=0){
-                    tempoCorrido = 0;
-                }else{
-                    tempoCorrido -= 15;
-                }
-                player.seekTo(tempoCorrido*1000);
-                seekTempo.setProgress(tempoCorrido);
+                recuar();
             }
         });
 
@@ -231,16 +230,39 @@ public class MusicaActivity extends AppCompatActivity {
 
     public void audioPause(){
         this.statusAudio =  "";
+        timerHandler.removeCallbacks(timerRunnable);
+        btnPlay.setImageResource(R.drawable.img_play);
         player.pause();
     }
 
 
 
-    private void audioStart() {
+    public void audioStart() {
 
         this.statusAudio =  "ouvindo";
+        btnPlay.setImageResource(R.drawable.img_pause);
         timerHandler.postDelayed(timerRunnable, 1000);
         player.start();
+    }
+
+    private void avancar(){
+        if (tempoCorrido - 15 >= tempoTotal){
+            tempoCorrido = tempoTotal - 1;
+        }else{
+            tempoCorrido += 15;
+        }
+        player.seekTo(tempoCorrido*1000);
+        seekTempo.setProgress(tempoCorrido);
+    }
+
+    private void recuar(){
+        if (tempoCorrido - 15 <=0){
+            tempoCorrido = 0;
+        }else{
+            tempoCorrido -= 15;
+        }
+        player.seekTo(tempoCorrido*1000);
+        seekTempo.setProgress(tempoCorrido);
     }
 
     public void audioStop() {
@@ -442,5 +464,42 @@ public class MusicaActivity extends AppCompatActivity {
         return newFilename;
     }
 
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            // cast the IBinder and get MyService instance
+            NotificationService.LocalBinder binder = (NotificationService.LocalBinder) service;
+            myService = binder.getService();
+            bound = true;
+            myService.setCallbacks(MusicaActivity.this); // register
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            bound = false;
+        }
+    };
+
+    /* Defined by ServiceCallbacks interface */
+    @Override
+    public void pause() {
+        audioPause();
+    }
+
+    @Override
+    public void play() {
+        audioStart();
+    }
+
+    @Override
+    public void avancarN() {
+        avancar();
+    }
+
+    @Override
+    public void voltarN() {
+        recuar();
+    }
 
 }
